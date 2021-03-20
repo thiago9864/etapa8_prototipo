@@ -1,0 +1,21 @@
+{
+  "name": "etapa8_prototipo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager builds TrabalhoRoupaEtapa8 --platform=win32 --arch=x64",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "Gabriele Cesar, Laura Polverari, Thiago Almeida",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^12.0.1",
+    "electron-builder": "^22.10.5",
+    "electron-packager": "^15.1.0"
+  },
+  "dependencies": {}
+}
