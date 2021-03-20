@@ -17,5 +17,7 @@
     "electron-builder": "^22.10.5",
     "electron-packager": "^15.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "pg": "^8.5.1"
+  }
 }
