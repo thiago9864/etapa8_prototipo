@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Etapa 8 - Trabalho de Banco de Dados</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,6 +12,7 @@
     <div>
         <button id="btn_func">Cadastro de Funcionário</button>
         <button id="btn_caixa">Caixa</button>
+        <button id="btn_relatorio_vendas">Relatório de Vendas</button>
         <button id="btn_venda">Cadastrar Venda</button>
     </div>
     <div>
@@ -38,13 +39,9 @@
                             <option value="desligado">Desligado</option>
                         </select>
                     </div>
-                    <div class="form_input">
+                    <div class="form_input" id="func_div_caixa">
                         <span>Caixa</span>
                         <select name="func_caixa" id="func_caixa">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
                         </select>
                     </div>
                     <button type="button" id="btn_cadastrar">Cadastrar</button>
@@ -64,7 +61,7 @@
                     </div>
                     <div class="form_input">
                         <span>Tipo de Funcionário</span>
-                        <select name="func_tipo_funcionario" id="func_tipo_funcionario">
+                        <select name="func_tipo_funcionario" id="func_tipo_funcionario" onchange="onChangeTipoFunc()">
                             <option value="vendedor">Vendedor</option>
                             <option value="administrador">Administrador</option>
                             <option value="auxiliar">Auxiliar de Almoxarifado</option>
@@ -74,17 +71,20 @@
             </form>
         </div>
         <div id="caixa">
-            <table class="tabela_caixa">
-                <tr>
-                    <th>Número</th>
-                    <th>Saldo</th>
-                    <th>Nome do Vendedor</th>
-                </tr>
-                <tr>
-                    <td>12</td>
-                    <td>R$ 1563,88</td>
-                    <td>Maria</td>
-                </tr>
+            <table class="tabela_caixa" id="tabela_caixa">
+            </table>
+        </div>
+        <div id="relatorio_vendas">
+            <div class="form_input">
+                <span>Filtro</span>
+                <select name="rel_filtro" id="rel_filtro" onchange="mudarFiltroRelatorio()">
+                    <option value="todo_o_periodo">Todo o período</option>
+                    <option value="ultima_semana">Última Semana</option>
+                    <option value="ultimos_30_dias">Últimos 30 dias</option>
+                    <option value="ultimo_ano">Último Ano</option>                    
+                </select>
+            </div>
+            <table class="tabela_relatorio_vendas" id="tabela_relatorio_vendas">
             </table>
         </div>
         <div id="cadastro_venda">
@@ -92,63 +92,34 @@
                 <div class="vend_linha">
                     <div class="form_input">
                         <span>Cliente</span>
-                        <select name="cars" id="cars">
-                            <option value="vendedor">Vendedor</option>
-                            <option value="administrador">Administrador</option>
-                            <option value="auxiliar">Auxiliar de Almoxarifado</option>
+                        <select name="vend_cliente" id="vend_cliente">
                         </select>
                     </div>
                     <div class="form_input">
                         <span>Vendedor</span>
-                        <select name="cars" id="cars">
-                            <option value="vendedor">Vendedor</option>
-                            <option value="administrador">Administrador</option>
-                            <option value="auxiliar">Auxiliar de Almoxarifado</option>
+                        <select name="vend_vendedor" id="vend_vendedor">
                         </select>
                     </div>
-                    <button type="button">Abrir Venda</button>
-                </div>
-                <div>
                     <div class="form_input">
                         <span>Forma de Pagamento</span>
-                        <select name="cars" id="cars">
+                        <select name="vend_pagamento" id="vend_pagamento">
                             <option value="dinheiro">Dinheiro</option>
                             <option value="cartao">Cartão</option>
                         </select>
                     </div>
-                    <div class="lista_itens">
-                        <div class="item_venda">
-                            <div style="flex-direction: column;">
-                                <span style="font-weight: bold;">Calça Jeans</span>
-                                <div style="flex-direction: row;">
-                                    <span>Quantidade:</span>
-                                    <input type="text">
-                                    <button type="button" class="btn_atualizar">Atualizar</button>
-                                </div>
-                                <span>Preço unitário: R$ 5,56</span>
-                            </div>
-                            <button type="button" class="botao_apaga_item">X</button>
-                        </div>
-                        <div class="item_venda">
-                            <div style="flex-direction: column;">
-                                <span style="font-weight: bold;">Calça Jeans</span>
-                                <div style="flex-direction: row;">
-                                    <span>Quantidade:</span>
-                                    <input type="text" value="1">
-                                    <button type="button" class="btn_atualizar">Atualizar</button>
-                                </div>
-                                <span>Preço unitário: R$ 5,56</span>
-                            </div>
-                            <button type="button" class="botao_apaga_item">X</button>
-                        </div>
+                    <button type="button" id="btn_abrir_venda" class="inline_button" style="margin-top: 18px;">Abrir Venda</button>
+                </div>
+                <div style="padding-top: 10px;">
+                    <div class="lista_itens" id="vend_lista_itens">
+                        
                     </div>
                 </div>
                 <div>
                     <div class="form_input">
                         <span>Busca de produto</span>
-                        <div style="flex-direction: row;">
-                            <input id="func_nome" type="text">
-                            <button type="button">Buscar</button>
+                        <div class="vend_cont_busca">
+                            <input id="vend_busca" type="text">
+                            <button type="button" id="btn_vend_busca" class="inline_button">Buscar</button>
                         </div>
                     </div>
                     <div id="resultado_busca_prod" class="res_busca_prod">
@@ -157,18 +128,18 @@
                         <div class="item_busca_prod" onclick="selecionaProd(3);">Nome do Produto</div>
                         <div class="item_busca_prod">Nome do Produto</div>
                     </div>
-                    <button type="button">Adicionar</button>
+                    <button type="button" id="vend_add_produto" class="inline_button" style="width: 100%;">Adicionar Produto Selecionado</button>
                     <div class="form_input">
                         <span>Código do Cupom</span>
-                        <div style="flex-direction: row;">
-                            <input id="func_nome" type="text">
-                            <button type="button">Confirmar</button>
+                        <div class="vend_cont_busca">
+                            <input id="vend_cod_cupom" type="text">
+                            <button type="button" id="btn_confirma_cupom" class="inline_button">Confirmar</button>
                         </div>
                     </div>
                     <div class="total_venda">
-                        <span>Total Venda</span>
-                        <span>R$ 123,45</span>
-                        <span>* Impostos: R$ 12,45</span>
+                        <span class="label_total_venda">Total Venda</span>
+                        <span id="vend_total" style="font-size: 1.3rem;">R$ 0,00</span>
+                        <span id="vend_impostos" style="font-size: 0.9rem; padding-top: 6px;">* Impostos: R$ 0,00</span>
                     </div>
                 </div>
             </form>

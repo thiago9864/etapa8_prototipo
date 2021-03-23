@@ -4,48 +4,78 @@ const path = require("path");
 //var electron = require("electron");
 //const { dialog } = require('electron')
 
-window.alertErro = function (mensagem){
-  console.log(mensagem)
-  //electron.remote.dialog.showErrorBox('Trabalho Roupa', mensagem);
+window.alertErro = function (mensagem) {
+    console.log(mensagem)
+    //electron.remote.dialog.showErrorBox('Trabalho Roupa', mensagem);
 }
 
 const pgClient = new Client({
-  user: 'aluno@ufjf.br',
-  host: '200.131.219.35',
-  database: 'turma2020_03',
-  password: 'aluno123',
-  port: 58081,
+    user: 'postgres',
+    host: 'localhost',
+    database: 'turma2020_03',
+    password: '12345678',
+    port: 5432,
 });
 
-// const pgClient = new Client({
-//   user: 'thiago',
-//   host: 'localhost',
-//   database: 'trabalho_roupa',
-//   password: '987654',
-//   port: 3306,
-// });
+//Inicialização do banco de dados
 
-//teste
-// var mysql      = require('mysql');
-// var connection = mysql.createConnection({
-//   host     : 'localhost',
-//   user     : 'time',
-//   password : '123456',
-//   database : 'trabalho_roupa'
-// });
+console.log('Iniciando a conexão com o banco de dados...');
+let isConnected = false;
+let callbackConexao = null;
+pgClient.connect(err => {
+    if (err) {
+        console.error('connection error', err.stack);
+    } else {
+        console.log('connected');
+        isConnected = true;
+        if (callbackConexao) {
+            callbackConexao();
+        }
+    }
+})
 
-window.getPGClient = function(){
-  return pgClient;
+window.callbackConexao = function (funcao) {
+    callbackConexao = funcao;
 }
-
-
+window.estaConectado = function () {
+    return isConnected;
+}
+window.getPGClient = function () {
+    return pgClient;
+}
+/*
+window.executaQuery = function (query, success, error) {
+    console.log('executaQuery',query);
+    const pgClient = new Client({
+        user: 'postgres',
+        host: 'localhost',
+        database: 'turma2020_03',
+        password: '12345678',
+        port: 5432,
+    });
+    pgClient.connect(err => {
+        if (err) {
+            console.error('connection error', err.stack);
+        } else {
+            console.log('connected');
+            pgClient
+                .query(query)
+                .then(success)
+                .catch(error)
+                .finally(() => {
+                    pgClient.end();
+                });
+        }
+    });
+}
+*/
 /*
 window.addEventListener('DOMContentLoaded', () => {
     const replaceText = (selector, text) => {
       const element = document.getElementById(selector)
       if (element) element.innerText = text
     }
-  
+
     for (const type of ['chrome', 'node', 'electron']) {
       replaceText(`${type}-version`, process.versions[type])
     }

@@ -11,13 +11,18 @@ body {
 button {
     height: 45px;
 }
-input, select {
+input {
     height: 25px;
+}
+select {
+    height: 30px;
 }
 table, th, td {
     border: 1px solid black;
 }
-
+.inline_button {
+    height: 30px;
+}
 
 .cadastro_func {
     display: grid;
@@ -43,7 +48,7 @@ table, th, td {
 
 .cadastro_venda {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 50% 50%;
     grid-template-rows: auto auto;
     grid-column-gap: 16px;
     padding: 0 16px;
@@ -51,17 +56,24 @@ table, th, td {
 
 .vend_linha {
     grid-column: 1 / 3;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: auto auto 150px 100px;
+    grid-column-gap: 16px;
+    align-items: center;
 }
-
+.vend_cont_busca {
+    display: grid;
+    grid-template-columns: auto 100px;
+    grid-column-gap: 16px;
+}
 .res_busca_prod {
     display: flex;
     height: calc(25px * 3);
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: scroll;
+    border: 1px solid #ccc;
+    margin: 6px 0 16px 0;
 }
 .item_busca_prod {
     height: 25px;
@@ -89,11 +101,12 @@ table, th, td {
     overflow-y: scroll;
 }
 .item_venda {
-    height: 100px;
-    min-height: 100px;
     display: grid;
     grid-template-columns: auto 40px;
-    grid-template-rows: 100px;
+    grid-template-rows: auto;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
 }
 .botao_apaga_item {
     background-color: #f00;
@@ -101,4 +114,13 @@ table, th, td {
 }
 .btn_atualizar {
     height: 25px;
+}
+.item_venda_input {
+    height: 19px;
+    width: 100px;
+}
+.label_total_venda {
+    font-weight: bold;
+    padding-bottom: 16px;
+    font-size: 1.5rem;
 }

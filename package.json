@@ -5,9 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager builds TrabalhoRoupaEtapa8 --platform=win32 --arch=x64",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "build": "electron-builder --dir"
   },
   "keywords": [],
   "author": "Gabriele Cesar, Laura Polverari, Thiago Almeida",
@@ -20,5 +18,11 @@
   "dependencies": {
     "mysql": "^2.18.1",
     "pg": "^8.5.1"
+  },
+  "build": {
+    "appId": "ufuf.br.etapa8_prototipo",
+    "mac": {
+      "category": "ufuf.br.etapa8_prototipo"
+    }
   }
 }
