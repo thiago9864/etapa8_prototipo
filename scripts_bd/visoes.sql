@@ -41,6 +41,24 @@ where prod.quantidadeEstoque>=5 and prod.id_marca=ma.id_marca and prod.id_cat=ca
 
 
 -- Visão 4: “Administrador/ entrar em contato com fornecedor”
+create or replace view trabalho_roupa.entrar_contato_forn(nome_produto,
+														 quantidade_estoque,
+														 categoria_prod,
+														 marca_prod,
+														 nome_fornecedor,
+														 cnpj,telefone)
+as
+select prod.nome,prod.quantidadeEstoque,cat.nome,ma.nome,forn.nome,forn.cnpj,forn.telefone
+from trabalho_roupa.produto prod,
+	 trabalho_roupa.categoria cat,
+	 trabalho_roupa.marca ma,
+	 trabalho_roupa.fornecedor forn,
+	 trabalho_roupa.fornecimento fornecimento
+where prod.quantidadeEstoque<=5 and prod.id_marca=ma.id_marca and
+	  prod.id_cat=cat.id_cat and prod.codigo_prod=fornecimento.codigo_prod
+	  and fornecimento.id_fornecedor=forn.id_fornecedor
+order by prod.nome;
+
 
 -- Visão 5: “Administrador/ Caixas”
 
